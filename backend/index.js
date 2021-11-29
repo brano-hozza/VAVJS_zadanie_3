@@ -63,12 +63,7 @@ app.post('/order', async (req, res) => {
   const {products, user} = req.body;
   const order = await db.Order.create({});
   await order.setUser(user);
-  for (let i = 0; i < products.length; i++) {
-    const product = await db.Product.findOne({
-      where: {id: products[i]},
-    });
-    await order.addProduct(product);
-  }
+  await order.addProducts(products);
   return res.status(200).json(order);
 });
 app.put('/order', async (req, res) => {
@@ -107,11 +102,6 @@ app.post('/pay', async (req, res) => {
     });
     const promises = [];
     for (let i = 0; i < products.length; i++) {
-      console.log({
-        amount: products[i].amount,
-        product_id: products[i].id,
-        order_id: order.id,
-      });
       promises.push(db.OrderProduct.create({
         amount: products[i].amount,
         product_id: products[i].id,
