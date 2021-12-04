@@ -8,7 +8,7 @@
       <template v-if="mode==='pay'">
         Počet kusov: {{ product.amount }}ks<br>
       </template>
-      Cena: {{ product.price }} Eur<br>
+      Cena: {{ product.price.toFixed(2) }} Eur<br>
       Popis: {{ product.description }}<br>
       <img
         :src="'http://localhost:5050/images/'+product.image"

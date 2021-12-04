@@ -5,7 +5,7 @@
     </v-card-title>
     <v-card-subtitle>Zákaznik: {{ userFullName }}</v-card-subtitle>
     <v-card-text>
-      <span class="total">Celková cena: {{ order.total_price }} EUR</span><br>
+      <span class="total">Celková cena: {{ order.total_price.toFixed(2) }} EUR</span><br>
       <details>
         <summary>Objednané veci:</summary>
         <span

@@ -25,6 +25,13 @@ describe('Products', function() {
       assert.equal(product.product_name, 'Furik');
     });
   });
+  describe('Get all products', function() {
+    it('Should return all products', async function() {
+      const raw = await fetch('http://localhost:5050/products');
+      const products = await raw.json();
+      assert.equal(products.length > 1, true);
+    });
+  });
 });
 
 

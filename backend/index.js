@@ -20,10 +20,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 (async () => {
-  await db.sequelize.sync();
+  await db.sequelize.sync({force: true});
   const products = await db.Product.findAll({});
   if (products.length >= 3) {
-    console.log('Database is already populated');
+    console.warn('Database is already populated');
     return;
   }
   console.log('Populating database...');
@@ -112,7 +112,7 @@ app.post('/pay', async (req, res) => {
 
     await order.setUser(user);
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return res.status(500).json({message: 'Error'});
   }
   return res.status(200).json({message: 'Order created'});
@@ -147,7 +147,6 @@ app.post('/product', async (req, res) => {
     description: req.body.description,
     image: req.body.image,
   });
-  console.log(product);
   return res.status(200).json({message: 'Product created'});
 });
 
@@ -176,7 +175,6 @@ app.post('/user', async (req, res) => {
     last_name: req.body.last_name,
     email: req.body.email,
   });
-  console.log(user);
   return res.status(200).json({message: 'User created', id: user.id});
 });
 
@@ -201,7 +199,7 @@ app.post('/images', upload.single('image'), (req, res) =>{
   const targePath = './assets/' + req.file.originalname;
   fs.rename(tmp, targePath, (err) => {
     if (err) {
-      console.log(err);
+      console.error(err);
       return res.status(500).json({message: 'Error saving image on server'});
     }
     return res.status(200).json({message: 'Image saved'});
@@ -255,7 +253,7 @@ app.post('/advertisement/image', upload.single('image'), async (req, res) => {
   const targePath = './adds/' + req.file.originalname;
   fs.rename(tmp, targePath, (err) => {
     if (err) {
-      console.log(err);
+      console.error(err);
       return res.status(500).json({message: 'Error saving image on server'});
     }
     return res.status(200).json({message: 'Image saved'});
